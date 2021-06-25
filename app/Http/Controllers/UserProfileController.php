@@ -156,4 +156,9 @@ class UserProfileController extends Controller
             return view('user.edit_password');
         }
     }
+
+    public function profile(){
+        $user = Auth::user();
+        return view('user.profile', ['user'=>$user]);
+    }
 }
