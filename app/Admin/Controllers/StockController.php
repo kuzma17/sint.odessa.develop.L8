@@ -3,72 +3,19 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Stock;
-
+use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Facades\Admin;
-use Encore\Admin\Layout\Content;
-use App\Http\Controllers\Controller;
-use Encore\Admin\Controllers\ModelForm;
-use Request;
+use Encore\Admin\Show;
 
-class StockController extends Controller
+class StockController extends AdminController
 {
-    use ModelForm;
-
-    protected $states = [
-        'on' => ['text' => 'ON', 'color' => 'success'],
-        'off' => ['text' => 'OFF', 'color' => 'danger'],
-    ];
-
     /**
-     * Index interface.
+     * Title for current resource.
      *
-     * @return Content
+     * @var string
      */
-    public function index()
-    {
-        return Admin::content(function (Content $content) {
-
-            $content->header('Акции');
-            $content->description('');
-
-            $content->body($this->grid());
-        });
-    }
-
-    /**
-     * Edit interface.
-     *
-     * @param $id
-     * @return Content
-     */
-    public function edit($id)
-    {
-        return Admin::content(function (Content $content) use ($id) {
-
-            $content->header('Акции');
-            $content->description('');
-
-            $content->body($this->form()->edit($id));
-        });
-    }
-
-    /**
-     * Create interface.
-     *
-     * @return Content
-     */
-    public function create()
-    {
-        return Admin::content(function (Content $content) {
-
-            $content->header('Акции');
-            $content->description('');
-
-            $content->body($this->form());
-        });
-    }
+    protected $title = 'Акции';
 
     /**
      * Make a grid builder.
@@ -77,20 +24,43 @@ class StockController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(Stock::class, function (Grid $grid) {
+        $grid = new Grid(new Stock());
 
-            $grid->column('id', 'ID')->sortable();
-            $grid->column('title', 'title');
-            $grid->column('banner', 'баннер')->display(function ($img){
-                return '<img src="/upload/'.$img.'" style="width:200px; height:60px">';
-            });
-            $grid->column('from', 'Дата начала');
-            $grid->column('to', 'Дата окончания');
-            $grid->column('active', 'Статус')->switch($this->states);
-
-            $grid->created_at();
-            $grid->updated_at();
+        $grid->column('id', 'ID')->sortable();
+        $grid->column('title', 'title');
+        $grid->column('banner', 'баннер')->display(function ($img){
+            return '<img src="/upload/'.$img.'" style="width:200px; height:60px">';
         });
+        $grid->column('from', 'Дата начала');
+        $grid->column('to', 'Дата окончания');
+        $grid->column('active', 'Статус')->switch();
+        $grid->column('created_at', __('Created at'));
+        $grid->column('updated_at', __('Updated at'));
+
+        return $grid;
+    }
+
+    /**
+     * Make a show builder.
+     *
+     * @param mixed $id
+     * @return Show
+     */
+    protected function detail($id)
+    {
+        $show = new Show(Stock::findOrFail($id));
+
+        $show->field('id', __('Id'));
+        $show->field('title', __('Title'));
+        $show->field('banner', __('Banner'));
+        $show->field('content', __('Content'));
+        $show->field('from', __('From'));
+        $show->field('to', __('To'));
+        $show->field('active', __('Active'));
+        $show->field('created_at', __('Created at'));
+        $show->field('updated_at', __('Updated at'));
+
+        return $show;
     }
 
     /**
@@ -100,26 +70,16 @@ class StockController extends Controller
      */
     protected function form()
     {
-        return Admin::form(Stock::class, function (Form $form) {
+        $form = new Form(new Stock());
 
-            $form->display('id', 'ID');
-            $form->text('title', 'Название')->rules('required');
-            $form->ckeditor('content', 'Текст')->rules('required');
-            $form->image('banner', 'баннер')->uniqueName()->move('banners');
-            $form->date('from', 'Дата начала');
-            $form->date('to', 'Дата окончания');
-            $form->switch('active')->states($this->states)->default(1);
+        $form->display('id', 'ID');
+        $form->text('title', 'Название')->rules('required');
+        $form->ckeditor('content', 'Текст')->rules('required');
+        $form->image('banner', 'баннер')->uniqueName()->move('banners');
+        $form->date('from', 'Дата начала');
+        $form->date('to', 'Дата окончания');
+        $form->switch('active')->states()->default(1);
 
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
-        });
-    }
-
-    public function release(Request $request)
-    {
-        foreach (Stock::find($request->get('ids')) as $post) {
-            $post->status = $request->get('action');
-            $post->save();
-        }
+        return $form;
     }
 }

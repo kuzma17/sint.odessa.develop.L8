@@ -3,68 +3,19 @@
 namespace App\Admin\Controllers;
 
 use App\Models\StatusRepair;
-
-use App\Models\StatusRepairs;
+use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Facades\Admin;
-use Encore\Admin\Layout\Content;
-use App\Http\Controllers\Controller;
-use Encore\Admin\Controllers\ModelForm;
-use Request;
+use Encore\Admin\Show;
 
-class StatusRepairController extends Controller
+class StatusRepairController extends AdminController
 {
-    use ModelForm;
-
     /**
-     * Index interface.
+     * Title for current resource.
      *
-     * @return Content
+     * @var string
      */
-    public function index()
-    {
-        return Admin::content(function (Content $content) {
-
-            $content->header('Статусы');
-            $content->description('ремонтов');
-
-            $content->body($this->grid());
-        });
-    }
-
-    /**
-     * Edit interface.
-     *
-     * @param $id
-     * @return Content
-     */
-    public function edit($id)
-    {
-        return Admin::content(function (Content $content) use ($id) {
-
-            $content->header('Статусы');
-            $content->description('ремонтов');
-
-            $content->body($this->form()->edit($id));
-        });
-    }
-
-    /**
-     * Create interface.
-     *
-     * @return Content
-     */
-    public function create()
-    {
-        return Admin::content(function (Content $content) {
-
-            $content->header('Статусы');
-            $content->description('ремонтов');
-
-            $content->body($this->form());
-        });
-    }
+    protected $title = 'StatusRepair';
 
     /**
      * Make a grid builder.
@@ -73,18 +24,39 @@ class StatusRepairController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(StatusRepairs::class, function (Grid $grid) {
+        $grid = new Grid(new StatusRepair());
 
-            $grid->column('id_1c', 'ID')->sortable();
-            $grid->column('name', "status");
-            $grid->column('name_site', "status site");
-            $grid->column('color', "color")->display(function($color){
-                return '<span class="badge" style="background-color: '.$color.'">'.$color.'</span>';
-            });
-
-            $grid->created_at();
-            $grid->updated_at();
+        $grid->column('id_1c', 'ID')->sortable();
+        $grid->column('name', "status");
+        $grid->column('name_site', "status site");
+        $grid->column('color', "color")->display(function($color){
+            return '<span class="badge" style="background-color: '.$color.'">'.$color.'</span>';
         });
+        $grid->column('created_at', __('Created at'));
+        $grid->column('updated_at', __('Updated at'));
+
+        return $grid;
+    }
+
+    /**
+     * Make a show builder.
+     *
+     * @param mixed $id
+     * @return Show
+     */
+    protected function detail($id)
+    {
+        $show = new Show(StatusRepair::findOrFail($id));
+
+        $show->field('id', __('Id'));
+        $show->field('id_1c', __('Id 1c'));
+        $show->field('name', __('Name'));
+        $show->field('name_site', __('Name site'));
+        $show->field('color', __('Color'));
+        $show->field('created_at', __('Created at'));
+        $show->field('updated_at', __('Updated at'));
+
+        return $show;
     }
 
     /**
@@ -94,16 +66,13 @@ class StatusRepairController extends Controller
      */
     protected function form()
     {
-        return Admin::form(StatusRepairs::class, function (Form $form) {
+        $form = new Form(new StatusRepair());
 
-            $form->number('id_1c', 'ID')->rules('required');
-            $form->text('name', 'status')->rules('required');
-            $form->text('name_site', 'status site')->rules('required');
-            $form->color('color', 'color');
+        $form->number('id_1c', 'ID')->rules('required');
+        $form->text('name', 'status')->rules('required');
+        $form->text('name_site', 'status site')->rules('required');
+        $form->color('color', 'color');
 
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
-        });
+        return $form;
     }
-
 }

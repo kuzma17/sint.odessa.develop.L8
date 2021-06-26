@@ -3,66 +3,19 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Page;
-
+use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Facades\Admin;
-use Encore\Admin\Layout\Content;
-use App\Http\Controllers\Controller;
-use Encore\Admin\Controllers\ModelForm;
+use Encore\Admin\Show;
 
-class PageController extends Controller
+class PageController extends AdminController
 {
-    use ModelForm;
-
     /**
-     * Index interface.
+     * Title for current resource.
      *
-     * @return Content
+     * @var string
      */
-    public function index()
-    {
-        return Admin::content(function (Content $content) {
-
-            $content->header('Страницы');
-            $content->description('');
-
-            $content->body($this->grid());
-        });
-    }
-
-    /**
-     * Edit interface.
-     *
-     * @param $id
-     * @return Content
-     */
-    public function edit($id)
-    {
-        return Admin::content(function (Content $content) use ($id) {
-
-            $content->header('Страницы');
-            $content->description('');
-
-            $content->body($this->form()->edit($id));
-        });
-    }
-
-    /**
-     * Create interface.
-     *
-     * @return Content
-     */
-    public function create()
-    {
-        return Admin::content(function (Content $content) {
-
-            $content->header('Страницы');
-            $content->description('');
-
-            $content->body($this->form());
-        });
-    }
+    protected $title = 'Страницы';
 
     /**
      * Make a grid builder.
@@ -71,15 +24,38 @@ class PageController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(Page::class, function (Grid $grid) {
+        $grid = new Grid(new Page());
 
-            $grid->column('id', 'ID')->sortable();
-            $grid->column('title', 'title');
-            $grid->column('url', 'url');
+        $grid->column('id', __('Id'));
+        $grid->column('url', __('Url'));
+        $grid->column('title', __('Title'));
+        //$grid->column('keywords', __('Keywords'));
+        //$grid->column('content', __('Content'));
+        $grid->column('created_at', __('Created at'));
+        $grid->column('updated_at', __('Updated at'));
 
-            $grid->created_at();
-            $grid->updated_at();
-        });
+        return $grid;
+    }
+
+    /**
+     * Make a show builder.
+     *
+     * @param mixed $id
+     * @return Show
+     */
+    protected function detail($id)
+    {
+        $show = new Show(Page::findOrFail($id));
+
+        $show->field('id', __('Id'));
+        $show->field('url', __('Url'));
+        $show->field('title', __('Title'));
+        //$show->field('keywords', __('Keywords'));
+        //$show->field('content', __('Content'));
+        $show->field('created_at', __('Created at'));
+        $show->field('updated_at', __('Updated at'));
+
+        return $show;
     }
 
     /**
@@ -89,17 +65,14 @@ class PageController extends Controller
      */
     protected function form()
     {
-        return Admin::form(Page::class, function (Form $form) {
+        $form = new Form(new Page());
 
-            $form->display('id', 'ID');
-            $form->text('title', 'Название')->rules('required');
-            $form->text('keywords', 'Ключевые слова');
-            $form->ckeditor('content', 'Текст страници')->rules('required');
-            $form->text('url', 'url');
+        $form->text('title', 'Название')->rules('required');
+        $form->text('keywords', 'Ключевые слова');
+        //$form->textarea('content', __('Content'));
+        $form->ckeditor('content', 'Текст страници')->rules('required');
+        $form->text('url', 'url');
 
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
-        });
+        return $form;
     }
-
 }

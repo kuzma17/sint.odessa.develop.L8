@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
@@ -10,6 +11,11 @@ class Order extends Model
     use Notifiable;
 
     protected $guarded = ['id', '1c_id'];
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 
     public function type_order(){
         return $this->belongsTo('App\Models\TypeOrder');

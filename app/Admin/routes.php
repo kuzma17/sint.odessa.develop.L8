@@ -21,16 +21,8 @@ Route::group([
     $router->resource('stocks', StockController::class);
     $router->resource('banners', BannerController::class);
     $router->resource('users', UserController::class);
-    //$router->resource('orders', OrderController::class);
-    //$router->resource('orderrepairs', OrderRepairController::class);
+    $router->resource('orders', OrderController::class);
+    $router->resource('order_repairs', OrderRepairController::class);
 
-    $router->get('orders', 'OrderController@index');
-    $router->get('orders/{id}/edit', 'OrderController@edit');
-    $router->get('orders/{id}', 'OrderController@show');
-    $router->put('orders/{id}', 'OrderController@update');
-    $router->get('orderrepairs', 'OrderController@index');
-    $router->get('orderrepairs/{id}/edit', 'OrderRepairController@edit');
-    $router->get('orderrepairs/{id}', 'OrderRepairController@show');
-    $router->put('orderrepairs/{id}', 'OrderRepairController@update');
 
 });

@@ -2,74 +2,20 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Page;
 use App\Models\Slider;
-
+use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Facades\Admin;
-use Encore\Admin\Layout\Content;
-use App\Http\Controllers\Controller;
-use Encore\Admin\Controllers\ModelForm;
-use Request;
+use Encore\Admin\Show;
 
-class SliderController extends Controller
+class SliderController extends AdminController
 {
-    use ModelForm;
-
-    protected $states = [
-        'on' => ['text' => 'ON', 'color' => 'success'],
-        'off' => ['text' => 'OFF', 'color' => 'danger'],
-    ];
-
     /**
-     * Index interface.
+     * Title for current resource.
      *
-     * @return Content
+     * @var string
      */
-    public function index()
-    {
-        return Admin::content(function (Content $content) {
-
-            $content->header('Слайдер');
-            $content->description('на главной');
-
-            $content->body($this->grid());
-        });
-    }
-
-    /**
-     * Edit interface.
-     *
-     * @param $id
-     * @return Content
-     */
-    public function edit($id)
-    {
-        return Admin::content(function (Content $content) use ($id) {
-
-            $content->header('Слайдер');
-            $content->description('на главной');
-
-            $content->body($this->form()->edit($id));
-        });
-    }
-
-    /**
-     * Create interface.
-     *
-     * @return Content
-     */
-    public function create()
-    {
-        return Admin::content(function (Content $content) {
-
-            $content->header('Слайдер');
-            $content->description('на главной');
-
-            $content->body($this->form());
-        });
-    }
+    protected $title = 'Slider';
 
     /**
      * Make a grid builder.
@@ -78,21 +24,42 @@ class SliderController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(Slider::class, function (Grid $grid) {
+        $grid = new Grid(new Slider());
 
-            $grid->column('id', 'ID')->sortable();
-            //$grid->column('weight', 'Номер')->sortable();
-            $grid->column('weight', 'Номер')->editable()->sortable();
-            $grid->column('image', 'Картинка')->display(function ($img){
-                return '<img src="/upload/'.$img.'" style="width:200px; height:60px">';
-            });
-            $grid->column('url', 'url');
-            $grid->column('slogan', 'Слоган')->editable();
-            $grid->column('active', 'Статус')->switch($this->states);
-
-            $grid->created_at();
-            $grid->updated_at();
+        $grid->column('id', 'ID')->sortable();
+        $grid->column('weight', 'Номер')->editable()->sortable();
+        $grid->column('image', 'Картинка')->display(function ($img){
+            return '<img src="/upload/'.$img.'" style="width:200px; height:60px">';
         });
+        $grid->column('url', 'url');
+        $grid->column('slogan', 'Слоган')->editable();
+        $grid->column('active', 'Статус')->switch();
+        $grid->column('created_at', __('Created at'));
+        $grid->column('updated_at', __('Updated at'));
+
+        return $grid;
+    }
+
+    /**
+     * Make a show builder.
+     *
+     * @param mixed $id
+     * @return Show
+     */
+    protected function detail($id)
+    {
+        $show = new Show(Slider::findOrFail($id));
+
+        $show->field('id', __('Id'));
+        $show->field('active', __('Active'));
+        $show->field('weight', __('Weight'));
+        $show->field('image', __('Image'));
+        $show->field('url', __('Url'));
+        $show->field('slogan', __('Slogan'));
+        $show->field('created_at', __('Created at'));
+        $show->field('updated_at', __('Updated at'));
+
+        return $show;
     }
 
     /**
@@ -102,24 +69,15 @@ class SliderController extends Controller
      */
     protected function form()
     {
-        return Admin::form(Slider::class, function (Form $form) {
+        $form = new Form(new Slider());
 
-            $form->display('id', 'ID');
-            $form->image('image')->resize(965, 400)->uniqueName()->move('slider')->rules('required');
-            $form->url('url', 'url');
-            $form->text('slogan', 'слоган');
-            $form->number('weight', 'номер')->default(Slider::max('weight')+1);
-            $form->switch('active')->states($this->states)->default(1);
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
-        });
-    }
+        $form->display('id', 'ID');
+        $form->image('image')->resize(965, 400)->uniqueName()->move('slider')->rules('required');
+        $form->text('url', 'url')->rules('required');
+        $form->text('slogan', 'слоган');
+        $form->number('weight', 'номер')->default(Slider::max('weight')+1);
+        $form->switch('active')->states()->default(1);
 
-    public function release(Request $request)
-    {
-        foreach (Slider::find($request->get('ids')) as $post) {
-            $post->status = $request->get('action');
-            $post->save();
-        }
+        return $form;
     }
 }

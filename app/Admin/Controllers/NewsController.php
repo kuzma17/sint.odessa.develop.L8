@@ -3,72 +3,21 @@
 namespace App\Admin\Controllers;
 
 use App\Models\News;
-
+use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Facades\Admin;
-use Encore\Admin\Layout\Content;
-use App\Http\Controllers\Controller;
-use Encore\Admin\Controllers\ModelForm;
-use Request;
+use Encore\Admin\Show;
 
-class NewsController extends Controller
+class NewsController extends AdminController
 {
-    use ModelForm;
-
-    protected $states = [
-        'on' => ['text' => 'ON', 'color' => 'success'],
-        'off' => ['text' => 'OFF', 'color' => 'danger'],
-    ];
-
     /**
-     * Index interface.
+     * Title for current resource.
      *
-     * @return Content
+     * @var string
      */
-    public function index()
-    {
-        return Admin::content(function (Content $content) {
+    protected $title = 'Новости';
 
-            $content->header('Новости');
-            $content->description('');
 
-            $content->body($this->grid());
-        });
-    }
-
-    /**
-     * Edit interface.
-     *
-     * @param $id
-     * @return Content
-     */
-    public function edit($id)
-    {
-        return Admin::content(function (Content $content) use ($id) {
-
-            $content->header('Новости');
-            $content->description('');
-
-            $content->body($this->form()->edit($id));
-        });
-    }
-
-    /**
-     * Create interface.
-     *
-     * @return Content
-     */
-    public function create()
-    {
-        return Admin::content(function (Content $content) {
-
-            $content->header('Новости');
-            $content->description('');
-
-            $content->body($this->form());
-        });
-    }
 
     /**
      * Make a grid builder.
@@ -77,16 +26,39 @@ class NewsController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(News::class, function (Grid $grid) {
+        $grid = new Grid(new News());
 
-            $grid->column('id', 'ID')->sortable();
-            $grid->column('title', 'title');
-            $grid->column('published_at', 'Дата');
-            $grid->column('published', 'Статус')->switch($this->states);
+        $grid->column('id', __('Id'));
+        $grid->column('title', __('Title'));
+        $grid->column('published_at', __('Published at'));
+        $grid->column('published', __('Published'))->switch();
+        $grid->column('created_at', __('Created at'));
+        $grid->column('updated_at', __('Updated at'));
 
-            $grid->created_at();
-            $grid->updated_at();
-        });
+        return $grid;
+    }
+
+    /**
+     * Make a show builder.
+     *
+     * @param mixed $id
+     * @return Show
+     */
+    protected function detail($id)
+    {
+        $show = new Show(News::findOrFail($id));
+
+        $show->field('id', __('Id'));
+        $show->field('url', __('Url'));
+        $show->field('title', __('Title'));
+        $show->field('content', __('Content'));
+        $show->field('image', __('Image'));
+        $show->field('published_at', __('Published at'));
+        $show->field('published', __('Published'));
+        $show->field('created_at', __('Created at'));
+        $show->field('updated_at', __('Updated at'));
+
+        return $show;
     }
 
     /**
@@ -96,25 +68,18 @@ class NewsController extends Controller
      */
     protected function form()
     {
-        return Admin::form(News::class, function (Form $form) {
+        $form = new Form(new News());
 
-            $form->display('id', 'ID');
-            $form->text('title', 'Название')->rules('required');
-            $form->ckeditor('content', 'Текст страници')->rules('required');
-            $form->image('image', 'image')->resize(300, 200)->uniqueName()->move('images');
-            $form->date('published_at', 'Дата');
-            $form->switch('published')->states($this->states)->default(1);
+        $form->display('id', 'ID');
+        $form->text('title', 'Название')->rules('required');
+        $form->ckeditor('content', 'Текст страници')->rules('required');
+        $form->image('image', 'image')->resize(300, 200)->uniqueName()->move('images');
+        $form->date('published_at', 'Дата');
+        $form->switch('published')->default(1);
 
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
-        });
-    }
+        $form->display('created_at', 'Created At');
+        $form->display('updated_at', 'Updated At');
 
-    public function release(Request $request)
-    {
-        foreach (News::find($request->get('ids')) as $post) {
-            $post->status = $request->get('action');
-            $post->save();
-        }
+        return $form;
     }
 }
