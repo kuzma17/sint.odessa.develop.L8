@@ -86,7 +86,7 @@ class UserProfileController extends Controller
 
         $user->update($request->request->all());
         $data = $request->except(['_token', 'email']);
-        $user->profile()->update($data);
+        $user->profile()->updateOrCreate($data);
 
         return redirect(route('user.profile'));
     }

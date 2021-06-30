@@ -30,8 +30,9 @@
                     <div class="col-md-8 form-inline">
                             @foreach($type_clients as $type_client)
                                 <input type="radio" class="form-control" name="type_client_id"
-                                       @if(($user? $user->profile->type_client_id:1) == $type_client->id) checked @endif
-                                    @if($user &&  $user->profile->type_client_id) disabled @endif
+                                       @if((($user && $user->profile)? $user->profile->type_client_id:1) == $type_client->id) checked @endif
+                                    @if($user && $user->profile &&  $user->profile->type_client_id) disabled @endif
+                                       value="{{ $type_client->id }}"
                                 >
                                 {{$type_client->name}}
                             @endforeach

@@ -27,6 +27,7 @@
                     @foreach($type_clients as $type_client)
                             <input type="radio" class="form-control type_user" name="type_client_id" @if(old('type_client', $user? $user->profile->type_client_id: 1) == $type_client->id) checked @endif
                             @if($user &&  $user->profile->type_client_id) disabled @endif
+                            value="{{ $type_client->id }}"
                             >
                             {{$type_client->name}}
                         @endforeach

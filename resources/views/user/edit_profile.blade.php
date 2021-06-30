@@ -13,8 +13,9 @@
 
 
                             @foreach($type_clients as $type_client)
-                                <input type="radio" class="form-control type_user" name="type_client_id" @if(old('type_client_id', $user? $user->profile->type_client_id: 1) == $type_client->id) checked @endif
-                                @if($user &&  $user->profile->type_client_id) disabled @endif
+                                <input type="radio" class="form-control type_user" name="type_client_id" @if(old('type_client_id', ($user && $user->profile)? $user->profile->type_client_id: 1) == $type_client->id) checked @endif
+                                @if($user && $user->profile &&  $user->profile->type_client_id) disabled @endif
+                                    value="{{ $type_client->id }}"
                                 >
                                 {{$type_client->name}}
                             @endforeach
@@ -64,7 +65,7 @@
                     <label for="phone" class="col-md-3 control-label">телефон<span class="red">*</span></label>
 
                     <div class="col-md-9">
-                        <input id="phone" type="text" class="form-control" name="phone" value="@if(old()){{ old('phone') }}@else{{ $user->profile? $user->profile->phone: '' }}@endif" @if($user->is_person() && isset($user->profile->phone)) readonly @endif placeholder="номер мобильного телефона(050xxxxxxx)">
+                        <input id="phone" type="text" class="form-control" name="phone" value="@if(old()){{ old('phone') }}@else{{ $user->profile? $user->profile->phone: '' }}@endif" @if($user->is_person() && isset($user->profile->phone)) readonly @endif placeholder="номер мобильного телефона(050xxxxxxx)" required>
 
                         @if ($errors->has('phone'))
                             <span class="help-block">
@@ -74,22 +75,22 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="address" class="col-md-3 control-label">Адрес доставки</label>
+                    <label for="address" class="col-md-3 control-label">Адрес доставки<span class="red">*</span></label>
                     <div class="col-md-9">
                         <div class="col-md-6" style=" padding:5px">
-                            <input  type="text" class="form-control" name="delivery_town" value="@if(old()){{ old('delivery_town') }}@else{{ $user->profile? $user->profile->delivery_town: '' }}@endif" >
+                            <input  type="text" class="form-control" name="delivery_town" value="@if(old()){{ old('delivery_town') }}@else{{ $user->profile? $user->profile->delivery_town: '' }}@endif" required>
                         </div>
-                        <label  class="control-label">город, населенный пункт</label>
+                        <label  class="control-label">город, населенный пункт<span class="red">*</span></label>
                     </div>
                     <div class="col-md-3"></div>
                     <div class="col-md-9">
                         <div class="col-md-6" style=" padding:5px">
-                            <input  type="text" class="form-control" name="delivery_street" value="@if(old()){{ old('delivery_street') }}@else{{ $user->profile? $user->profile->delivery_street: '' }}@endif" >
-                            <label  class="control-label">улица</label>
+                            <input  type="text" class="form-control" name="delivery_street" value="@if(old()){{ old('delivery_street') }}@else{{ $user->profile? $user->profile->delivery_street: '' }}@endif" required>
+                            <label  class="control-label">улица<span class="red">*</span></label>
                         </div>
                         <div class="col-md-2" style=" padding: 5px">
                             <input  type="text" class="form-control" name="delivery_house" value="@if(old()){{ old('delivery_house') }}@else{{ $user->profile? $user->profile->delivery_house: '' }}@endif" >
-                            <label  class="control-label">дом</label>
+                            <label  class="control-label">дом<span class="red">*</span></label>
                         </div>
                         <div class="col-md-2" style=" padding: 5px">
                             <input  type="text" class="form-no-control" name="delivery_house_block" value="@if(old()){{ old('delivery_house_block') }}@else{{ $user->profile? $user->profile->delivery_house_block: '' }}@endif">
