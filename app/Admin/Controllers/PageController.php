@@ -28,7 +28,7 @@ class PageController extends AdminController
 
         $grid->column('id', __('Id'));
         $grid->column('url', __('Url'));
-        $grid->column('title', __('Title'));
+        $grid->column('title_ru', __('Title'));
         //$grid->column('keywords', __('Keywords'));
         //$grid->column('content', __('Content'));
         $grid->column('created_at', __('Created at'));
@@ -49,9 +49,8 @@ class PageController extends AdminController
 
         $show->field('id', __('Id'));
         $show->field('url', __('Url'));
-        $show->field('title', __('Title'));
-        //$show->field('keywords', __('Keywords'));
-        //$show->field('content', __('Content'));
+        $show->field('title_ru', __('Title ru'));
+        $show->field('title_ua', __('Title ua'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
 
@@ -67,10 +66,11 @@ class PageController extends AdminController
     {
         $form = new Form(new Page());
 
-        $form->text('title', 'Название')->rules('required');
-        $form->text('keywords', 'Ключевые слова');
-        //$form->textarea('content', __('Content'));
-        $form->ckeditor('content', 'Текст страници')->rules('required');
+        $form->text('title_ru', 'Название ru')->rules('required');
+        $form->text('title_ua', 'Название ua')->rules('required');
+        $form->textarea('keywords', 'Ключевые слова')->rules('required');;
+        $form->ckeditor('content_ru', 'Текст страници ru')->rules('required');
+        $form->ckeditor('content_ua', 'Текст страници ua')->rules('required');
         $form->text('url', 'url');
 
         return $form;

@@ -6,13 +6,13 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
-        <i class="fa fa-check fa-lg"></i> Ваше письмо успешно отправлено, и будет рассмотено в ближайшее время.
+        <i class="fa fa-check fa-lg"></i> @lang('main.you_mail_send').
     </div>
     @endif
 
     <div class="container">
         <div class="row">
-            <h3>Написать нам</h3>
+            <h3>@lang('main.write_to_use')</h3>
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
 
@@ -21,7 +21,7 @@
                             {{ csrf_field() }}
 
                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                <label for="name" class="col-md-4 control-label">Ваше имя</label>
+                                <label for="name" class="col-md-4 control-label">@lang('main.your_name')</label>
 
                                 <div class="col-md-6">
                                     <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
@@ -49,7 +49,7 @@
                             </div>
 
                             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label for="password" class="col-md-4 control-label">Текст сообщения</label>
+                                <label for="password" class="col-md-4 control-label">@lang('main.text_message')</label>
 
                                 <div class="col-md-6">
                                     <textarea style="height: 200px" id="message" class="form-control" name="message"></textarea>
@@ -60,7 +60,7 @@
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">
-                                        Отправить
+                                        @lang('main.send')
                                     </button>
                                 </div>
                             </div>

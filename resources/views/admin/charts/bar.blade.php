@@ -1,7 +1,7 @@
-<canvas id="{{$id}}" width="400" height="200"></canvas>
+<canvas id="ChartBar" width="400" height="200"></canvas>
 <script>
     $(function () {
-        var ctx = document.getElementById("{{$id}}").getContext('2d');
+        var ctx = document.getElementById("ChartBar").getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {

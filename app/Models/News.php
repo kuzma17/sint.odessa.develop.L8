@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\Locale;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 
 
 class News extends Model
 {
-    //use Eloquence;
+    use Locale;
+
     protected $table = 'news';
     protected $searchableColumns = ['title', 'content'];
 

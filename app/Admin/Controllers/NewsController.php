@@ -29,7 +29,7 @@ class NewsController extends AdminController
         $grid = new Grid(new News());
 
         $grid->column('id', __('Id'));
-        $grid->column('title', __('Title'));
+        $grid->column('title_ru', __('Title'));
         $grid->column('published_at', __('Published at'));
         $grid->column('published', __('Published'))->switch();
         $grid->column('created_at', __('Created at'));
@@ -50,8 +50,10 @@ class NewsController extends AdminController
 
         $show->field('id', __('Id'));
         $show->field('url', __('Url'));
-        $show->field('title', __('Title'));
-        $show->field('content', __('Content'));
+        $show->field('title_ru', __('Title ru'));
+        $show->field('title_ua', __('Title ua'));
+        $show->field('content_ru', __('Content ru'));
+        $show->field('content_ua', __('Content ua'));
         $show->field('image', __('Image'));
         $show->field('published_at', __('Published at'));
         $show->field('published', __('Published'));
@@ -71,8 +73,10 @@ class NewsController extends AdminController
         $form = new Form(new News());
 
         $form->display('id', 'ID');
-        $form->text('title', 'Название')->rules('required');
-        $form->ckeditor('content', 'Текст страници')->rules('required');
+        $form->text('title_ru', 'Название ru')->rules('required');
+        $form->text('title_ua', 'Название ua')->rules('required');
+        $form->ckeditor('content_ru', 'Текст страници ru')->rules('required');
+        $form->ckeditor('content_ua', 'Текст страници ua')->rules('required');
         $form->image('image', 'image')->resize(300, 200)->uniqueName()->move('images');
         $form->date('published_at', 'Дата');
         $form->switch('published')->default(1);

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="content-page">
-<h3>Новости</h3>
+<h3>@lang('main.news')</h3>
 @foreach($news as $new)
     <h5>{{ $new->title }}</h5>
     <span class="date_news">{{ date('d m Y', strtotime($new->published_at))}}</span>
@@ -10,7 +10,7 @@
         <img class="news_image_list" src="{{ url('/upload/'.$new->image) }}">
      @endif
         {!! \Illuminate\Support\Str::words($new->content, 50) !!}
-    <a href="{{ url('/news/'.$new->id) }}">подробнее</a>
+    <a href="{{ url('/news/'.$new->id) }}">@lang('main.more_details')</a>
 <div class="clear"></div>
 @endforeach
 </div>

@@ -57,9 +57,3 @@ if ($('.error_login_message').length > 0) {
     $('#login-dp').show();
 }
 
-//$('select[name=user_consent]').change(function() {
-  //  if($('select[ame=user_consent]').val() != 0){
-    //    $('input[type=submit]').prop('disabled', false);
-    //}
-//});
-

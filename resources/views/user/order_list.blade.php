@@ -14,12 +14,12 @@
             </thead>
             <tbody>
             @foreach($orders as $order)
-                <tr class="link_order" onclick="document.location.href='{{ route('user.orders.show', $order->id ) }}'">
-                    <td>{{ $order['1c_id'] or ''}}</td>
+                <tr class="link_order" onclick="document.location.href='{{ url('/user/order/'.$order->id) }}'">
+                    <td>{{ $order->id }}</td>
                     <td>{{ $order->type_order->name }}</td>
                     <td>{{ date_format($order->created_at, "d.m.Y") }}</td>
                     <td>{{ $order->status->name_site }}</td>
-                    <td>{{ $order->act_repair? $order->act_repair->status_repair->name:'' }}</td>
+                    <td>{{ $order->act_repair->status_repair->name or '' }}</td>
                 </tr>
              @endforeach
             </tbody>

@@ -37,7 +37,7 @@
     <h3>{{ $page->title }}</h3>
     {!! $page->content !!}
     @if(count($news) > 0)
-        <h4 style="color: royalblue" ><i class="fa fa-newspaper-o" aria-hidden="true"></i> Новости</h4>
+        <h4 style="color: royalblue" ><i class="fa fa-newspaper-o" aria-hidden="true"></i> @lang('main.news')</h4>
         <div style="background-color: #f2f2f2; padding: 10px">
         @foreach($news as $new)
             <div>
@@ -47,7 +47,7 @@
                     <img class="news_image_list" src="{{ url('/upload/'.$new->image) }}">
                 @endif
                 {!! \Illuminate\Support\Str::words($new->content, 50) !!}
-                <a href="{{ url('/news/'.$new->id) }}">подробнее</a>
+                <a href="{{ url('/news/'.$new->id) }}">@lang('main.more_details')</a>
 				<div class="clear"></div><br>
             </div>
         @endforeach

@@ -8,16 +8,19 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ \App\Models\Settings::first()->title }}</title>
     <meta name="keywords"
-          content="{{ \App\Models\Settings::first()->keywords }}@if(isset($page) && $page->keywords != ''), {{ $page->keywords }}@endif">
+          content="{{ \App\Models\Settings::first()->keywords }}@if(isset($page) && $page->seo_keywords != ''), {{ $page->seo_keywords}}@endif">
 
     <link href="/css/app.css" rel="stylesheet"/>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-social.css"/>
     <link rel="stylesheet" href="/css/lightbox.min.css">
     <link href="/css/style.css" rel="stylesheet"/>
 
+    <!-- New Year -->
+    <!--<link href="/css/newyear.css" rel="stylesheet"/>-->
+    <!-- End New Year -->
+
     <script>
         window.Laravel = <?php echo json_encode([
-                'csrfToken' => csrf_token(),
+            'csrfToken' => csrf_token(),
         ]); ?>
     </script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -34,38 +37,42 @@
 <div class="top-wrapper">
     @include('layouts.menuTop')
 </div>
-
 <div class="container">
     <div class="row">
         <div class="rcol-sm-12 col-md-12 col-lg-4">
-            <div class="logo"><img src="/images/logo.jpg"></div>
+            <div class="logo">
+                <a href="{{route('home')}}">
+                    <img src="/images/logo.jpg">
+                    <!--<img src="/images/{{app()->getLocale()}}_logo_snow.jpg">-->
+                </a>
+            </div>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4"
              style="padding-top: 10px; padding-left: 0px; color: #808080; font-family: 'Lato', sans-serif; font-size: 12px">
             <div class="clear"></div>
             <div style="float: left; width: 240px"><i class="glyphicon glyphicon-map-marker" style="color: #107fbe"></i>
-                Адмиральский пр-т. 33А
+                @lang('main.office_admiralsky')
             </div>
             <div style="float: left; width: 160px;"><i class="glyphicon glyphicon-earphone"
                                                        style="color: orangered"></i> +38(067)557-65-67
             </div>
             <div class="clear"></div>
             <div style="float: left; width: 240px"><i class="glyphicon glyphicon-map-marker" style="color: #107fbe"></i>
-                Соборная пл. 12
+                @lang('main.office_soborka')
             </div>
             <div style="float: left; width: 160px;"><i class="glyphicon glyphicon-earphone"
                                                        style="color: orangered"></i> +38(067)488-04-83
             </div>
             <div class="clear"></div>
             <div style="float: left; width: 240px"><i class="glyphicon glyphicon-map-marker" style="color: #107fbe"></i>
-                Днепропетровская дор. 94
+                @lang('main.office_dneprodoroga')
             </div>
             <div style="float: left; width: 160px;"><i class="glyphicon glyphicon-earphone"
                                                        style="color: orangered"></i> +38(066)290-50-02
             </div>
             <div class="clear"></div>
             <div style="float: left; width: 240px"><i class="glyphicon glyphicon-map-marker" style="color: #107fbe"></i>
-                Ак. Королева 33
+                @lang('main.office_koroleva')
             </div>
             <div style="float: left; width: 160px;"><i class="glyphicon glyphicon-earphone"
                                                        style="color: orangered"></i> +38(098)879-30-48
@@ -73,10 +80,10 @@
             <div class="clear"></div>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-4" style="padding-top: 15px">
-        @if(Auth::guest())
-            <a href="{{ url('/user/order-modal') }}" class="btn btn-success btn-top" ><i class="glyphicon glyphicon-plus"></i> Заказать услугу </a>
+        @if (Auth::guest())
+            <!--<a href="{{ url('/user/order-modal') }}" class="btn btn-success btn-top" ><i class="glyphicon glyphicon-plus"></i> Заказать услугу </a>-->
         @else
-            <a href="#" class="btn btn-success btn-top" @if(URL::current() != url('/order')) data-toggle="modal" data-target="#orderModal" @endif><i class="glyphicon glyphicon-plus"></i> Сделать заказ </a>
+            <!--<a href="#" class="btn btn-success btn-top" @if(URL::current() != url('/order')) data-toggle="modal" data-target="#orderModal" @endif><i class="glyphicon glyphicon-plus"></i> Сделать заказ </a>-->
             @endif
             <a href="http://sint-market.com" class="btn  btn-warning btn-top" target="_blank"><i
                         class="glyphicon glyphicon-shopping-cart"></i> Перейти в магазин</a>
@@ -84,6 +91,9 @@
         <div class="clear"></div>
         <div class="container">
         @include('layouts.menu')
+        <!-- New Year -->
+        <!--@include('layouts.newyear')-->
+        <!-- end New Year -->
         </div>
     </div>
 
@@ -95,13 +105,11 @@
         </div>
     </div>
 </div>
-
-
 <div class="bottom-wrapper">
     <div class="container bottom">
         <div class="row">
             <div class="col-sm-12 col-md-3 col-lg-3 border_right">
-                <h4>Контакты</h4>
+                <h4>@lang('main.contacts')</h4>
 
                 <ul class="address-bottom">
                     <li><i class="glyphicon glyphicon-phone"></i> +38(050)392-392-5</li>
@@ -113,30 +121,30 @@
                 </ul>
             </div>
             <div class="col-sm-12 col-md-4 col-lg-4 border_right">
-                <h4>Офисы</h4>
+                <h4>@lang('main.offices')</h4>
 
                 <ul class="address-bottom">
-                    <li><i class="glyphicon glyphicon-map-marker"></i> Гл. офис: Адмиральский пр-т. 33А
+                    <li><i class="glyphicon glyphicon-map-marker"></i> @lang('main.office_admiralsky')
                         <i class="glyphicon glyphicon-earphone"></i> +38(0482)333-767
                     </li>
-                    <li><i class="glyphicon glyphicon-map-marker"></i> Соборная пл. 12
+                    <li><i class="glyphicon glyphicon-map-marker"></i> @lang('main.office_soborka')
                         <i class="glyphicon glyphicon-earphone"></i> +38(048)777-16-85
                     </li>
-                    <li><i class="glyphicon glyphicon-map-marker"></i> Днепропетровская дор. 94
+                    <li><i class="glyphicon glyphicon-map-marker"></i> @lang('main.office_dneprodoroga')
                         <i class="glyphicon glyphicon-earphone"></i> +38(0482)379-141
                     </li>
-                    <li><i class="glyphicon glyphicon-map-marker"></i> Ак. Королева 33
+                    <li><i class="glyphicon glyphicon-map-marker"></i> @lang('main.office_koroleva')
                         <i class="glyphicon glyphicon-earphone"></i> +38(0482)323-505
                     </li>
                 </ul>
             </div>
             <div class="col-sm-12 col-md-3 col-lg-3 border_right">
-                <h4>Навигация</h4>
+                <h4>@lang('main.navigation')</h4>
+                <?php
+                $menu = \App\Models\Menu::root()->active()->order()->get();
+                $i = 0;
+                ?>
                 <ul class="menu-bottom">
-                    @php
-                        $menu = \App\Models\Menu::where('active', 1)->orderBy('weight', 'asc')->get();
-                        $i = 0;
-                    @endphp
                     @foreach($menu as $link)
                         @if($i == 5)
                 </ul>
@@ -167,25 +175,25 @@
                     <!--LiveInternet counter-->
                     <script type="text/javascript"><!--
                         document.write("<a href='http://www.liveinternet.ru/click' " +
-                                "target=_blank><img src='http://counter.yadro.ru/hit?t14.11;r" +
-                                escape(document.referrer) + ((typeof(screen) == "undefined") ? "" :
+                            "target=_blank><img src='http://counter.yadro.ru/hit?t14.11;r" +
+                            escape(document.referrer) + ((typeof(screen) == "undefined") ? "" :
                                 ";s" + screen.width + "*" + screen.height + "*" + (screen.colorDepth ?
-                                        screen.colorDepth : screen.pixelDepth)) + ";u" + escape(document.URL) +
-                                ";" + Math.random() +
-                                "' alt='' title='LiveInternet: показано число просмотров за 24" +
-                                " часа, посетителей за 24 часа и за сегодня' " +
-                                "border=0 width=88 height=31><\/a>")//--></script><!--/LiveInternet-->
+                                screen.colorDepth : screen.pixelDepth)) + ";u" + escape(document.URL) +
+                            ";" + Math.random() +
+                            "' alt='' title='LiveInternet: показано число просмотров за 24" +
+                            " часа, посетителей за 24 часа и за сегодня' " +
+                            "border=0 width=88 height=31><\/a>")//--></script><!--/LiveInternet-->
 
                     <!-- I.UA counter --><a href="http://www.i.ua/" target="_blank"
                                             onclick="this.href='http://i.ua/r.php?198771';" title="Rated by I.UA">
                         <script type="text/javascript"><!--
                             iS = 'http' + (window.location.protocol == 'https:' ? 's' : '') +
-                                    '://r.i.ua/s?u198771&p104&n' + Math.random();
+                                '://r.i.ua/s?u198771&p104&n' + Math.random();
                             iD = document;
                             if (!iD.cookie)iD.cookie = "b=b; path=/";
                             if (iD.cookie)iS += '&c1';
                             iS += '&d' + (screen.colorDepth ? screen.colorDepth : screen.pixelDepth)
-                                    + "&w" + screen.width + '&h' + screen.height;
+                                + "&w" + screen.width + '&h' + screen.height;
                             iT = iR = iD.referrer.replace(iP = /^[a-z]*:\/\//, '');
                             iH = window.location.href.replace(iP, '');
                             ((iI = iT.indexOf('/')) != -1) ? (iT = iT.substring(0, iI)) : (iI = iT.length);
@@ -215,41 +223,29 @@
         <div class="copyright">Copyright 2017 @ Designed by <a href="mailto:v.kuzma@mail.ru">Kuzma</a></div>
     </div>
 </div>
+
 @include('order.orderModal')
+
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="{{ asset('js/lightbox.min.js') }}"></script>
 <script src="{{ asset('js/script.js') }}"></script>
-@yield('js_ulogin')
+
+<!-- New Year -->
+<!--<script src="{{ asset('js/snow.js') }}"></script>-->
+<!--<script src="{{ asset('js/newyear.js') }}"></script>-->
+<!-- End New Year -->
+
 @if(URL::current() == url('/user/order-modal'))
     <script type="text/javascript">
         $('#orderModal').modal('show');
     </script>
 @endif
 
-<!--<script type="text/javascript">
-    imageDir = "http://mvcreative.ru/example/6/2/snow/";
-    sflakesMax = 65;
-    sflakesMaxActive = 65;
-    svMaxX = 2;
-    svMaxY = 6;
-    ssnowStick = 1;
-    ssnowCollect = 0;
-    sfollowMouse = 1;
-    sflakeBottom = 0;
-    susePNG = 1;
-    sflakeTypes = 5;
-    sflakeWidth = 15;
-    sflakeHeight = 15;
-</script>
-<script type="text/javascript" src="http://mvcreative.ru/example/6/2/snow.js"></script>
--->
 <!-- BEGIN JIVOSITE CODE {literal} -->
-<!--
 <script type='text/javascript'>
-(function(){ var widget_id = 'zu8O4tOtH7';var d=document;var w=window;function l(){
-var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+    (function(){ var widget_id = 'zu8O4tOtH7';var d=document;var w=window;function l(){
+        var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
 </script>
--->
 <!-- {/literal} END JIVOSITE CODE -->
 </body>
 </html>

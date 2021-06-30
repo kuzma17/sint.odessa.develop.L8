@@ -49,7 +49,7 @@ class MenuController extends AdminController
 		                        <span class="bootstrap-switch-handle-off bootstrap-switch-danger" style="width: 40px;">OFF</span>
                                 </div>';
                 }
-                return "{$branch['id']} - {$branch['title']} <span style='position:absolute;right:50%'> {$branch['url']} </span> {$swith}";
+                return "{$branch['id']} - {$branch['title_ru']} ({$branch['title_ua']}) <span style='position:absolute;right:50%'> {$branch['url']} </span> {$swith}";
             });
         });
     }
@@ -67,7 +67,8 @@ class MenuController extends AdminController
         $show->field('id', __('Id'));
         $show->field('parent_id', __('Parent id'));
         $show->field('url', __('Url'));
-        $show->field('title', __('Title'));
+        $show->field('title_ru', __('Title ru'));
+        $show->field('title_ua', __('Title ua'));
         $show->field('weight', __('Weight'));
         $show->field('active', __('Active'));
         $show->field('created_at', __('Created at'));
@@ -86,11 +87,23 @@ class MenuController extends AdminController
         $form = new Form(new Menu());
 
         $form->number('parent_id', __('Parent id'));
-        $form->url('url', __('Url'));
-        $form->text('title', __('Title'));
-        $form->number('weight', __('Weight'));
-        $form->switch('active', __('Active'));
+        $form->text('url', __('Url'));
+        $form->text('title_ru', 'Название ru')->rules('required');
+        $form->text('title_ua', 'Название ua')->rules('required');
+        $form->select('parent_id', 'Родитель')->options($this->getSelectMenuItems());
+        $form->number('weight', 'Номер')->default(Menu::all()->max('weight'));
+        $form->switch('active')->states()->default(1);
+
 
         return $form;
+    }
+
+    protected function getSelectMenuItems(){
+
+        return Menu::active()
+            ->order()
+            ->get()
+            ->prepend(['title_ru'=>'корень', 'id'=>0])
+            ->pluck('title_ru', 'id');
     }
 }
