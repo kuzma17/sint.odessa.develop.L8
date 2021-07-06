@@ -31,11 +31,11 @@
             </div>
         </div>
         <ul class="user_menu">
-            <li><a href="{{ url('/user') }}" >Параметры профиля</a></li>
-            <li><a href="{{ url('/user/edit') }}" >Редактировать профиль</a></li>
-            <li><a href="{{ url('/user/password') }}" >Изменить пароль</a></li>
-            <li><a href="#" @if(URL::current() != url('/order')) data-toggle="modal" data-target="#orderModal" @endif>Сделать заказ</a></li>
-            <li><a href="{{ url('/user/orders') }}" >Мои заказы</a></li>
+            <li><a href="{{ url('/user') }}" ><i class="fa fa-address-card-o"></i> Параметры профиля</a></li>
+            <li><a href="{{ url('/user/edit') }}" ><i class="fa fa-pencil-square-o"></i> Редактировать профиль</a></li>
+            <li><a href="{{ url('/user/password') }}" ><i class="fa fa-key"></i> Изменить пароль</a></li>
+            <li><a href="#" @if(URL::current() != url('/order')) data-toggle="modal" data-target="#orderModal" @endif><i class="fa fa-cart-plus"></i> Сделать заказ</a></li>
+            <li><a href="{{ route('user.orders.index') }}" ><i class="fa fa-shopping-basket"></i> Мои заказы</a></li>
             <li><a href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="fa fa-sign-out"></i> Выход
                 </a></li>

@@ -62,8 +62,7 @@ class OrderController extends Controller
        $order = $user->orders()->create($request->request->all());
        session()->flash('ok_message', 'Ваш заказ успешно создан и будет обработан в ближайшее время.');
 
-       //return view('user.')
-       return redirect()->back();
+       return redirect(route('user.orders.index'));
 
     }
 
