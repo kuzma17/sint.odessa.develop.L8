@@ -42,7 +42,7 @@ class OrderRepairController extends AdminController
             return $this->type_client->name;
         });
         $grid->column('Клиент')->display(function (){
-            return $this->user->profile->client_name;
+            return isset($this->user->profile->client_name)?$this->user->profile->client_name:'';
         });
 
         $grid->column('act_repair.status_repair_id', 'Статус ремонта')->display(function(){
@@ -165,7 +165,7 @@ class OrderRepairController extends AdminController
             @$status_repair_old = ActRepair::where('order_id', $order->id)->get()[0]['status_repair_id'];
             $status_repair_name = StatusRepair::find($status_repair_new)->name;
            // if(!isset($status_repair_old) || (isset($status_repair_old) && $status_repair_new != $status_repair_old)){
-           //     $order->notify(new StatusOrderRepair($order, $status_repair_name));
+            //    $order->notify(new StatusOrderRepair($order, $status_repair_name));
            // }
         });
 

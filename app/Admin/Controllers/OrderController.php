@@ -44,7 +44,7 @@ class OrderController extends AdminController
             return $this->type_client->name;
         });
         $grid->column('Клиент')->display(function (){
-            return $this->user->profile->client_name;
+            return isset($this->user->profile->client_name)?$this->user->profile->client_name:'';
         });
         $grid->column('status_id', 'Статус заказа')->display(function(){
             if ($this->type_order_id == 1 && $this->status){
