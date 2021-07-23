@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Models\ActRepair;
+use App\Models\History;
 use App\Models\Order;
 use App\Models\Status;
 use App\Models\StatusRepair;
@@ -161,11 +162,19 @@ class OrderController extends AdminController
         })->saving(function(Form $form){
             $order = $form->model();
             $status_new = $form->status_id;
-            $status_old = Order::find($order->id)->status_id;
+            $status_old = $order->status->id;
             $status_name = Status::find($status_new)->name;
-           // if($status_new != $status_old){
+
+            if($status_new != $status_old){
                // $order->notify(new StatusOrder($order, $status_name));
-            //}
+
+               $history = new History([
+                    'order_id' => $order->id,
+                    'admin_user' => \Auth::user()->name,
+                    'status_info' => 'Изменен статус заказа: '.$order->status->name.' => '.$status_name
+                    ]);
+               $history->save();
+            }
         });
 
         return $form;

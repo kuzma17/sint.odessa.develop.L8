@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\History;
 use App\Models\Office;
 use App\Models\Order;
 use App\Models\TypeClient;
@@ -60,6 +61,13 @@ class OrderController extends Controller
 
        $user = Auth::user();
        $order = $user->orders()->create($request->request->all());
+
+        $history = new History([
+            'order_id' => $order->id,
+            'status_info' => 'Создан новый заказ № '.$order->id
+        ]);
+        $history->save();
+
        session()->flash('ok_message', 'Ваш заказ успешно создан и будет обработан в ближайшее время.');
 
        return redirect(route('user.orders.index'));

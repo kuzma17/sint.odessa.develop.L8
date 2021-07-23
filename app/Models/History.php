@@ -10,4 +10,5 @@ class History extends Model
     protected $table = 'histories';
 
     protected $fillable = ['order_id', 'user_admin', 'status_info', 'comment'];
+
 }
