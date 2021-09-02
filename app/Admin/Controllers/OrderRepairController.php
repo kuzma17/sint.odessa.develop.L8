@@ -168,14 +168,19 @@ class OrderRepairController extends AdminController
            // $status_repair_old = $order->act_repair->status_repair->id;
             $status_repair_name = StatusRepair::find($status_repair_new)->name;
 
-            //dd($order->act_repair->status_repair);
+           // dd($order->act_repair);
             if(!isset($status_repair_old) || (isset($status_repair_old) && $status_repair_new != $status_repair_old)){
             //    $order->notify(new StatusOrderRepair($order, $status_repair_name));
+
+                $status_info = 'Создан статус заказа:'.$status_repair_name;
+                if (isset($order->act_repair->status_repair)){
+                    $status_info = 'Изменен статус заказа: '.$order->act_repair->status_repair->name.' => '.$status_repair_name;
+                }
 
                 $history = new History([
                     'order_id' => $order->id,
                     'admin_user' => \Auth::user()->name,
-                    'status_info' => 'Изменен статус заказа: '.$order->act_repair->status_repair->name.' => '.$status_repair_name
+                    'status_info' =>  $status_info
                 ]);
                 $history->save();
             }
