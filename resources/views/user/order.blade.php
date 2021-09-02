@@ -69,7 +69,7 @@
                     <tr><td>Подтверждение:</td><td>
                             <select name="user_consent" class="form-control" @if(!$order->act_repair->is_open()) disabled @endif>
                                 <option value="0">выберите вариант ответа</option>
-                                @foreach(\App\UserConsent::all() as $consent)
+                                @foreach(\App\Models\UserConsent::all() as $consent)
                                     <option value="{{ $consent->id }}" @if($consent->id == $order->act_repair->user_consent_id) selected="selected" @endif>{{ $consent->name }}</option>
                                 @endforeach
                             </select> </td></tr>
