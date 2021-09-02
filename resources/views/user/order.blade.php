@@ -54,6 +54,7 @@
                 </table>
             </div>
             @if($order->type_order_id == 2 && $order->act_repair)
+
             <div class="tab-pane fade" id="tab-2">
                 <form name="repair" method="post" action="/user/order/repair_save">
                     {{ csrf_field() }}
