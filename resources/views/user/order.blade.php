@@ -4,7 +4,7 @@
         <h4>Заказ №{{ $order->id }}</h4>
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tab-1" data-toggle="tab">Заказ</a></li>
-            @if($order->type_order_id == 2 && $order->status_id != 1 && $order->act_repair)
+            @if($order->type_order_id == 2 && $order->act_repair)
                 <li><a href="#tab-2" data-toggle="tab">Акт ремонта</a></li>
             @endif
             <li><a href="#tab-3" data-toggle="tab">История</a></li>
@@ -53,7 +53,7 @@
                     </tbody>
                 </table>
             </div>
-            @if($order->type_order_id == 2 && $order->status_id != 1 && $order->act_repair)
+            @if($order->type_order_id == 2 && $order->act_repair)
             <div class="tab-pane fade" id="tab-2">
                 <form name="repair" method="post" action="/user/order/repair_save">
                     {{ csrf_field() }}
