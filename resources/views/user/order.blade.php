@@ -14,7 +14,7 @@
             <div class="tab-pane fade in active" id="tab-1">
                 <table class="table table-striped">
                     <tbody>
-                    <tr><td>№</td><td>{{ $order['1c_id'] or ''}}</td></tr>
+                    <tr><td>№</td><td>{{ $order['1c_id'] }}</td></tr>
                     <tr><td >Статус:</td><td>{{ $order->status->name_site }}</td></tr>
                     <tr><td width="200">Тип услуги:</td><td>{{ $order->type_order->name }}</td></tr>
                     <tr><td>Тип пользователя:</td><td>{{ $user->profile->type_client->name }}</td></tr>
@@ -26,11 +26,11 @@
                     <tr><td>Адрес доставки:</td><td>
                             @if(isset($order->delivery_town)) г. {{ $order->delivery_town}} @endif
                             @if(isset($order->delivery_street)) ул. {{ $order->delivery_street}} @endif
-                            {{ $order->delivery_house or '' }} {{ $order->delivery_house_block or '' }}
+                            {{ $order->delivery_house }} {{ $order->delivery_house_block }}
                             @if(isset($order->delivery_office)) кв.{{ $order->delivery_office }} @endif
                         </td></tr>
                     <tr><td >E-mail</td><td>{{ $user->email }}</td></tr>
-                    <tr><td >Офис обслуживания</td><td>{{ $user->profile->service_office->name or '' }}</td></tr>
+                    <tr><td >Офис обслуживания</td><td>{{ $user->profile->service_office->name }}</td></tr>
                     @if( $user->profile->type_client_id == 2 )
                         <tr><td >Форма оплаты</td><td>{{ $order->type_payment->name }}</td></tr>
                         @if( $order->type_payment_id == 2 ||  $order->type_payment_id == 3)
@@ -56,16 +56,16 @@
             @if($order->type_order_id == 2 && $order->act_repair)
 
             <div class="tab-pane fade" id="tab-2">
-                <form name="repair" method="post" action="/user/order/repair_save">
+                <form name="repair" method="post" action="{{ route('user.repair.save') }}">
                     {{ csrf_field() }}
                     <input type="hidden" name="order_id" value="{{ $order->id }}">
                 <table class="table table-striped">
                     <tbody>
-                    <tr><td>Статус ремонта:</td><td>{{ $order->act_repair->status_repair->name_site or ''}}</td></tr>
-                    <tr><td >Оборудование:</td><td>{{ $order->act_repair->device or ''}}</td></tr>
-                    <tr><td width="200">Комплектация:</td><td>{{ $order->act_repair->set_device or ''}}</td></tr>
-                    <tr><td>Описание неисправности<br>(со слов заказчика):</td><td>{{ $order->act_repair->text_defect or ''}}</td></tr>
-                    <tr><td>Диагностика:</td><td>{{ $order->act_repair->diagnostic or '' }}</td></tr>
+                    <tr><td>Статус ремонта:</td><td>{{ $order->act_repair->status_repair->name_site }}</td></tr>
+                    <tr><td >Оборудование:</td><td>{{ $order->act_repair->device }}</td></tr>
+                    <tr><td width="200">Комплектация:</td><td>{{ $order->act_repair->set_device }}</td></tr>
+                    <tr><td>Описание неисправности<br>(со слов заказчика):</td><td>{{ $order->act_repair->text_defect }}</td></tr>
+                    <tr><td>Диагностика:</td><td>{{ $order->act_repair->diagnostic }}</td></tr>
                     <tr><td>Стоимость работы:</td><td>{{ $order->act_repair->cost }}</td></tr>
                     <tr><td>Подтверждение:</td><td>
                             <select name="user_consent" class="form-control" @if(!$order->act_repair->is_open()) disabled @endif>
@@ -74,7 +74,7 @@
                                     <option value="{{ $consent->id }}" @if($consent->id == $order->act_repair->user_consent_id) selected="selected" @endif>{{ $consent->name }}</option>
                                 @endforeach
                             </select> </td></tr>
-                    <tr><td >Комментарий:</td><td><textarea class="form-control" name="comment" @if(!$order->act_repair->is_open()) readonly @endif>{{ $order->act_repair->comment or ''}}</textarea></td></tr>
+                    <tr><td >Комментарий:</td><td><textarea class="form-control" name="comment" @if(!$order->act_repair->is_open()) readonly @endif>{{ $order->act_repair->comment }}</textarea></td></tr>
                     @if($order->act_repair->is_open())
                     <tr><td>Подтверждение:</td><td><input type="submit" class="btn btn-primary" value="Отправить"></td></tr>
                     @endif
@@ -99,7 +99,7 @@
                                 <tr>
                                     <td>{{ $history->created_at }}</td>
                                     <td>{{ $history->status_info }}</td>
-                                    <td>{{ $history->comment or '' }}</td>
+                                    <td>{{ $history->comment }}</td>
                                 </tr>
                             @endforeach
                             </tbody>

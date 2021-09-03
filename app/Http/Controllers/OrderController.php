@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActRepair;
 use App\Models\History;
 use App\Models\Office;
 use App\Models\Order;
@@ -119,5 +120,24 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function user_consent(Request $request){
+        $order_id = $request->input('order_id');
+        $repair = ActRepair::where('order_id', $order_id)->first();
+        $repair->user_consent_id = $request->input('user_consent');
+        $repair->comment = $request->input('comment');
+        $repair->save();
+
+        // Save History
+        $history = new \App\Models\History();
+        $history->order_id = $order_id;
+        $history->status_info = $repair->user_consent->name;
+        $history->comment = $repair->comment;
+        $history->save();
+        // End Save History
+
+        Session::flash('ok_message', 'Ваш заказ успешно подтвержден и будет обработан в ближайшее время.');
+        return redirect(route('user.orders.show', $order_id));
     }
 }

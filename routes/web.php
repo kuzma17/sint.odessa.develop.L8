@@ -38,6 +38,8 @@ Route::middleware(['set_locale'])->group(function () {
         Route::get('/avatar/delete', ['as' => 'avatar.delete', 'uses' => 'UserProfileController@dell_avatar']);
         Route::get('/password', ['as' => 'password.edit', 'uses' => 'UserProfileController@edit_password']);
         Route::post('/password', ['as' => 'password.save', 'uses' => 'UserProfileController@edit_password']);
+
+        Route::post('/order/repair_save', ['as'=>'repair.save', 'middleware'=>'client', 'uses'=>'OrderController@user_consent']);
     });
 
 
