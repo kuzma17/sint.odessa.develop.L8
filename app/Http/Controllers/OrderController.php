@@ -83,7 +83,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        $order->load('history');
+        $order->load('history', 'act_repair');
         $user = Auth::user();
         return view('user.order', ['order'=>$order, 'user'=>$user]);
     }

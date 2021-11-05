@@ -154,6 +154,20 @@ class OrderController extends AdminController
             $form->display('delivery_house', 'дом');
             $form->display('delivery_house_block', 'корпус');
             $form->display('delivery_office', 'квартира');
+        })->tab('Согласование', function (Form $form) {
+            $form->select('act_repair.status_repair_id', 'Статус ремонта')->options(StatusRepair::all()->pluck('name', 'id'))->rules('required');
+            $form->text('act_repair.device', 'ремонтируемое устройство')->rules('required');
+            $form->text('act_repair.set_device', 'комплектация')->rules('required');
+            $form->textarea('act_repair.text_defect', 'описание деффекта')->rules('required');
+            $form->textarea('act_repair.diagnostic', 'диагностика')->rules('required');
+            $form->text('act_repair.cost', 'стоимость')->rules('required');
+            $form->textarea('act_repair.comment', 'комментарий');
+            //$form->select('act_repair.user_consent_id', 'Ответ заказчика')->options(UserConsent::all()->pluck('name', 'id'))->readOnly();
+            $form->html( function (){
+                $val = '';
+                @$val = $this->act_repair->user_consent->name;
+                return '<div class="box box-solid box-default no-margin"><div class="box-body">'.$val.'</div></div>';
+            }, 'Ответ заказчика');
         })->tab('История', function($form){
             $form->html(function($form){
                 return view('admin.history', ['histories' => $form->model()->history]);
@@ -167,6 +181,22 @@ class OrderController extends AdminController
 
             if($status_new != $status_old){
                // $order->notify(new StatusOrder($order, $status_name));
+
+                $status_repair_new = $form->act_repair['status_repair_id'];
+                @$status_repair_old = ActRepair::where('order_id', $order->id)->get()[0]['status_repair_id'];
+                // $status_repair_old = $order->act_repair->status_repair->id;
+                $status_repair_name = StatusRepair::find($status_repair_new)->name;
+
+                // dd($order->act_repair);
+              //  if(!isset($status_repair_old) || (isset($status_repair_old) && $status_repair_new != $status_repair_old)){
+                    //    $order->notify(new StatusOrderRepair($order, $status_repair_name));
+
+
+                    $status_repair_info = 'Cтатус ремонта: '.$status_repair_name;
+                    if($order->act_repair){
+                        $status_repair_info = 'Изменен статус ремонта: '.$order->act_repair->status_repair->name.' => '.$status_repair_name;
+
+                    }
 
                $history = new History([
                     'order_id' => $order->id,
