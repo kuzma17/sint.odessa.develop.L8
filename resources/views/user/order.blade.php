@@ -15,7 +15,7 @@
         </ul>
 
         <div class="tab-content">
-            <div class="tab-pane fade in active" id="tab-1">
+            <div class="tab-pane in active" id="tab-1">
                 <table class="table table-striped">
                     <tbody>
                     <tr><td>№</td><td>{{ $order['1c_id'] }}</td></tr>
@@ -67,10 +67,12 @@
                 <table class="table table-striped">
                     <tbody>
                     <tr><td>Статус ремонта:</td><td>{{ $order->act_repair->status_repair->name_site }}</td></tr>
+                    @if($order->type_order_id == 2)
                     <tr><td >Оборудование:</td><td>{{ $order->act_repair->device }}</td></tr>
                     <tr><td width="200">Комплектация:</td><td>{{ $order->act_repair->set_device }}</td></tr>
                     <tr><td>Описание неисправности<br>(со слов заказчика):</td><td>{{ $order->act_repair->text_defect }}</td></tr>
                     <tr><td>Диагностика:</td><td>{{ $order->act_repair->diagnostic }}</td></tr>
+                    @endif
                     <tr><td>Стоимость работы:</td><td>{{ $order->act_repair->cost }}</td></tr>
                     <tr><td>Подтверждение:</td><td>
                             <select name="user_consent" class="form-control" @if(!$order->act_repair->is_open()) disabled @endif>

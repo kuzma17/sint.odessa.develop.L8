@@ -156,10 +156,10 @@ class OrderController extends AdminController
             $form->display('delivery_office', 'квартира');
         })->tab('Согласование', function (Form $form) {
             $form->select('act_repair.status_repair_id', 'Статус ремонта')->options(StatusRepair::all()->pluck('name', 'id'))->rules('required');
-            $form->text('act_repair.device', 'ремонтируемое устройство')->rules('required');
-            $form->text('act_repair.set_device', 'комплектация')->rules('required');
-            $form->textarea('act_repair.text_defect', 'описание деффекта')->rules('required');
-            $form->textarea('act_repair.diagnostic', 'диагностика')->rules('required');
+            //$form->text('act_repair.device', 'ремонтируемое устройство')->rules('required');
+           // $form->text('act_repair.set_device', 'комплектация')->rules('required');
+           // $form->textarea('act_repair.text_defect', 'описание деффекта')->rules('required');
+           // $form->textarea('act_repair.diagnostic', 'диагностика')->rules('required');
             $form->text('act_repair.cost', 'стоимость')->rules('required');
             $form->textarea('act_repair.comment', 'комментарий');
             //$form->select('act_repair.user_consent_id', 'Ответ заказчика')->options(UserConsent::all()->pluck('name', 'id'))->readOnly();
